@@ -57,6 +57,13 @@ class RoutesController < ApplicationController
     end
   end
 
+  def result
+    @routes = Route.where(station_id: params[:q])
+    @routes = Route.includes(:stops).where(
+      vehicle_id: params[:v], station_id: params[:e]).where(
+      stops: {time: params[:t], station_id: params[:s]})
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_route
