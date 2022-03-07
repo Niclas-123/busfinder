@@ -58,10 +58,12 @@ class RoutesController < ApplicationController
   end
 
   def result
-    @routes = Route.where(station_id: params[:q])
+    v_id = Vehicle.where(name: params[:v]).pluck(:id)
+    end_station_id = Station.where(name: params[:e]).pluck(:id)
+    start_station_id = Station.where(name: params[:s]).pluck(:id)
     @routes = Route.includes(:stops).where(
-      vehicle_id: params[:v], station_id: params[:e]).where(
-      stops: {time: params[:t], station_id: params[:s]})
+      vehicle_id: v_id, station_id: end_station_id).where(
+      stops: {time: params[:t], station_id: start_station_id})
   end
 
   private
